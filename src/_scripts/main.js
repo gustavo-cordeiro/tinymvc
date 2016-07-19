@@ -1,7 +1,9 @@
 require('babel-polyfill');
 
+import $ from 'jquery';
 import page from 'page';
-import Cliets from './Models/Clients/Cliets';
+import Cliets from './Models/Clients/Clients';
+import VCliets from './Views/Clients/Clients';
 
 page('/', index);
 
@@ -11,6 +13,7 @@ page.start();
 async function index() {
   const model = new Cliets();
   const attrs = await model.load();
-
-  console.log(attrs);
+  
+  const view = new VCliets();
+  console.log(view.renderIn($('body')));
 }

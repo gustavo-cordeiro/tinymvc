@@ -3,9 +3,10 @@ import jade from 'jade';
 import PubSub from './PubSub';
 
 export default class extends PubSub {
-  construct(path, locals = {}) {
+  constructor(path, locals = {}) {
+    super();
     this.id = _.uniqueId('view');
-    this.fnTemplate = jade.compileFile(path);
+    this.fnTemplate = jade.compileFile({filename: path});
     this.baseLocals = locals;
   }
 
