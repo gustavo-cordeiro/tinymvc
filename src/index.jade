@@ -4,13 +4,10 @@ include _modules/link/link
 
 block content
   .container
-    #[+link({text: 'documentation'})(href='/contact')]
-    #[+link({text: 'documentation/2'})(href='/contact/2')]
-    
     section(id="clients-list")
       div.search
         input(type="text")
         button(type="button") Buscar
-      ul
+      ul(class="clients-list__container")
 
   code.version v1.5.2

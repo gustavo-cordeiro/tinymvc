@@ -1,24 +1,14 @@
 import $ from 'jquery';
 import View from '../../Core/View';
 
-export default class extends View {
-	render(clients) {
-		this.$parentElement.html('');
-
-		clients.map(client => {
-	  	$createClienteItem(client)
-	    	.appendTo(this.$parentElement);
-		});
-
-    super.render();
-	}
-
-  setup() {
-    this.$searchInput = this.$parentElement.find();
-    this.$parentElement
-      .find('.search button')
-      .on('click', event => this.pub(`${this.guid}-submit`, this.$searchInput.value()));
-  }
+function template(name, email, id) {
+  return `
+    <li class="client">
+      <p class="client__name">${name}</p>
+      <p class="client__email">${email}</p>
+      <a href="/${id}/edit" class="client__action">Editar</a>
+    </li>
+  `;
 }
 
 function $createClienteItem(Client) {
@@ -28,12 +18,48 @@ function $createClienteItem(Client) {
   return $element;
 }
 
-function template(name, email, id) {
-  return `
-    <li class="client">
-      <p class="client__name">${name}</p>
-      <p class="client__email">${email}</p>
-      <a href="/${id}/edit" class="client__action">Editar</a>
-    </li>
-  `;
+export default class extends View {
+  constructor() {
+    super(...arguments);
+
+    this.$clientsContainer = this.$parentElement.find('.clients-list__container');
+  }
+
+  render(data) {
+    const clients = data.listOfClients;
+
+    this.$clientsContainer.html('');
+
+    clients.map(client => {
+      $createClienteItem(client)
+        .appendTo(this.$clientsContainer);
+    });
+
+    super.render();
+  }
+
+  fireSearch(delay) {
+    if(this.timeoutId) {
+      clearTimeout(this.timeoutId);
+    }
+
+    this.timeoutId = setTimeout(() => {
+      this.pub(
+        `${this.guid}-submit`,
+        this.$searchInput.val()
+      );
+
+      this.timeoutId = null;
+    }, delay);
+  }
+
+  setup() {
+    this.$searchInput = this.$parentElement
+      .find('.search input')
+      .on('keyup', event => this.fireSearch(100));
+
+    this.$parentElement
+      .find('.search button')
+      .on('click', event => this.fireSearch(0));
+  }
 }

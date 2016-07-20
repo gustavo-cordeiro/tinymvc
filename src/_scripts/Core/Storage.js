@@ -10,7 +10,7 @@ function setItem (key, attrs) {
     localStorage.setItem(key, stringify);
   }
 
-  return '';
+  return stringify;
 };
 
 export default {

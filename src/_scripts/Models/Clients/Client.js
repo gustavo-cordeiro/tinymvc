@@ -47,7 +47,6 @@ export default class extends Model{
     }
 
     clone.meta.modified = new Date();
-
     return super.setAttributes(clone);
   }
 }

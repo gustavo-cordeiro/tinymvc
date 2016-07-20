@@ -1,13 +1,22 @@
 import _ from 'lodash';
 
-export default class {
-  construcor(model, view) {
-    this.id = _.uniqueId('controller');
-    this.model = model;
-    this.view = view;
+export default class Clients {
+  construcor() {
+    this.guid = _.uniqueId('controller');
   }
 
   setup() {
-  	
+    this.setupView();
+    this.setupModel();
+  }
+
+  render(data) {
+    if(data) {
+      this.view.render(data);
+    }
+    else {
+      this.view.render(this.modal.toJson());
+    }
   }
 };
+

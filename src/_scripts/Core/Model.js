@@ -6,15 +6,16 @@ export default class extends PubSub {
   constructor(attrs) {
     super();
     this.attrs = {};
-    this.id = _.uniqueId('model');
+    this.guid = _.uniqueId('model');
 
-    this.setAttributes(attrs);
+    if(attrs) {
+      this.setAttributes(attrs);
+    }
   }
 
   load(key) {
     return new Promise( resolve => {
       let data = localStorage.getItem(key);
-
       if(data) {
         data = this.setAttributes(data);
       }
@@ -25,8 +26,7 @@ export default class extends PubSub {
 
   setAttributes(attrs) {
     Object.assign(this.attrs, attrs);
-
-    this.pub(`${this.id}-update`, attrs);
+    this.pub(`${this.guid}-update`, attrs);
 
     return this.attrs;
   }
@@ -35,7 +35,7 @@ export default class extends PubSub {
     Storage.setItem(this.toJson());
   }
 
-  get toJson() {
+  toJson() {
     return _.cloneDeep(this.attrs);
   }
 
