@@ -7,10 +7,10 @@ const STORAGE_KEY = 'clients';
 export default class extends Model{
   load() {
     return new Promise( resolve => {
-      const cliets = Storage.getItem(STORAGE_KEY) || [];
-      const adapterClients = cliets.map(client => new Client(client));
+      const clients = Storage.getItem(STORAGE_KEY) || [];
+      const clientsArray = clients.map(client => new Client(client));
 
-      resolve(this.setAttributes(adapterClients));
+      resolve(this.setAttributes({listOfClients: clientsArray}));
     });
   }
 }

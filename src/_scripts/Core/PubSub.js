@@ -1,21 +1,23 @@
 export default class {
   constructor() {
     this.topics = {};
-    this.eventsCount = {};
+    this.eventsCount = 0;
   }
 
-  sub(events, data) {
+  pub(events, data) {
     for (var topic in this.topics){
       if (this.topics.hasOwnProperty(topic)) {
-        if (topic.split('-')[0] == events) {
+        console.log(topic, events);
+        if (topic.split("#")[0] == events) {
           this.topics[topic](data) !== false || delete this.topics[topic];
         }
       }
     }
   }
 
-  pub (events, callback) {
-    this.topics[events + --this.eventNumber] = callback;
+  sub (events, callback) {
+    this.topics[`${events}#${++this.eventsCount}`] = callback;
+    console.log(this.topics);
   }
 
   remove (topic) {

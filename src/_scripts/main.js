@@ -12,8 +12,8 @@ page.start();
 
 async function index() {
   const model = new Cliets();
-  const attrs = await model.load();
-  
-  const view = new VCliets();
-  console.log(view.renderIn($('body')));
+  const {listOfClients} = await model.load();
+
+  const view = new VCliets($('#clients-list ul'));
+  view.render(listOfClients);
 }

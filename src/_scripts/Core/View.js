@@ -3,26 +3,20 @@ import jade from 'jade';
 import PubSub from './PubSub';
 
 export default class extends PubSub {
-  constructor(path, locals = {}) {
+  constructor($parentElement) {
     super();
-    this.id = _.uniqueId('view');
-    this.fnTemplate = jade.compileFile({filename: path});
-    this.baseLocals = locals;
+    this.guid = _.uniqueId('view');
+    this.$parentElement = $parentElement;
+    this.sub(`${this.guid}-rendered`, this.setup);
+
   }
 
-  render(locals = {}) {
-    const mergedLocals = Object.assign({}, locals, this.baseLocals);
-    const template = this.fnTemplate(mergedLocals);
-
-    this.pub(`${this.id}-render`, template);
-
-    return template;
+  render() {
+  	this.pub(`${this.guid}-rendered`, this.$parentElement);
   }
 
-  renderIn($element, locals = {}) {
-    $element.html(this.render(locals));
-    this.pub(`${this.id}-renderIn`, $element);
-
-    return $element;
+  setup() {
+  	this.pub(`${this.guid}-ready`, this.$parentElement);
   }
 }
+

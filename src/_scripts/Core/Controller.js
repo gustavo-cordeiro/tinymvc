@@ -6,4 +6,8 @@ export default class {
     this.model = model;
     this.view = view;
   }
+
+  setup() {
+  	
+  }
 };
